@@ -27,6 +27,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
+ * 摄像头的各种配置
  * Utility methods for configuring the Android camera.
  *
  * @author Sean Owen
@@ -133,6 +134,13 @@ public final class CameraConfigurationUtils {
         setBestPreviewFPS(parameters, MIN_FPS, MAX_FPS);
     }
 
+    /**
+     * 设置最佳刷新频率
+     *
+     * @param parameters 摄像头参数
+     * @param minFPS     最低
+     * @param maxFPS     最高
+     */
     public static void setBestPreviewFPS(Camera.Parameters parameters, int minFPS, int maxFPS) {
         List<int[]> supportedPreviewFpsRanges = parameters.getSupportedPreviewFpsRange();
         Log.i(TAG, "Supported FPS ranges: " + toString(supportedPreviewFpsRanges));
@@ -162,6 +170,11 @@ public final class CameraConfigurationUtils {
         }
     }
 
+    /**
+     * 焦点区域.
+     *
+     * @param parameters
+     */
     public static void setFocusArea(Camera.Parameters parameters) {
         if (parameters.getMaxNumFocusAreas() > 0) {
             Log.i(TAG, "Old focus areas: " + toString(parameters.getFocusAreas()));
@@ -215,6 +228,9 @@ public final class CameraConfigurationUtils {
         }
     }
 
+    /**
+     * 缩放
+     */
     public static void setZoom(Camera.Parameters parameters, double targetZoomRatio) {
         if (parameters.isZoomSupported()) {
             Integer zoom = indexOfClosestZoom(parameters, targetZoomRatio);
@@ -232,6 +248,13 @@ public final class CameraConfigurationUtils {
         }
     }
 
+    /**
+     * 缩放???
+     *
+     * @param parameters
+     * @param targetZoomRatio
+     * @return
+     */
     private static Integer indexOfClosestZoom(Camera.Parameters parameters, double targetZoomRatio) {
         List<Integer> ratios = parameters.getZoomRatios();
         Log.i(TAG, "Zoom ratios: " + ratios);
