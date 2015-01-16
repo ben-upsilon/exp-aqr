@@ -41,7 +41,7 @@ public final class OpenCameraInterface {
 
         int numCameras = Camera.getNumberOfCameras();
         if (numCameras == 0) {
-            Log.w(TAG, "No cameras!");
+            Log.w(TAG, "我了个擦,没找到摄像头!");
             return null;
         }
 

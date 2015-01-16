@@ -23,10 +23,12 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.camera.FrontLightMode;
 
 /**
+ * 环境光感
  * Detects ambient light and switches on the front light when very dark, and off again when sufficiently light.
  *
  * @author Sean Owen
@@ -34,6 +36,7 @@ import com.google.zxing.client.android.camera.FrontLightMode;
  */
 final class AmbientLightManager implements SensorEventListener {
 
+    private static final String LogTag=AmbientLightManager.class.getCanonicalName();
     private static final float TOO_DARK_LUX = 45.0f;
     private static final float BRIGHT_ENOUGH_LUX = 450.0f;
 
@@ -69,6 +72,7 @@ final class AmbientLightManager implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         float ambientLightLux = sensorEvent.values[0];
+        Log.d(LogTag,"ambientLightLux =>" +ambientLightLux);
         if (cameraManager != null) {
             if (ambientLightLux <= TOO_DARK_LUX) {
                 cameraManager.setTorch(true);

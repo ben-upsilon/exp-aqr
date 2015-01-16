@@ -39,7 +39,6 @@ import android.widget.Toast;
 import ben.upsilon.exp.aqr.R;
 import com.google.zxing.*;
 import com.google.zxing.client.android.camera.CameraManager;
-import com.google.zxing.client.android.clipboard.ClipboardInterface;
 import com.google.zxing.client.android.result.ResultButtonListener;
 import com.google.zxing.client.android.result.ResultHandler;
 import com.google.zxing.client.android.result.ResultHandlerFactory;
@@ -445,10 +444,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         CharSequence displayContents = resultHandler.getDisplayContents();
 
-        if (copyToClipboard && !resultHandler.areContentsSecure()) {
-            ClipboardInterface.setText(displayContents, this);
-        }
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (resultHandler.getDefaultButtonID() != null && prefs.getBoolean(PreferencesActivity.KEY_AUTO_OPEN_WEB, false)) {
@@ -554,10 +549,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             statusView.setText(getString(resultHandler.getDisplayTitle()) + " : " + rawResultString);
         }
 
-        if (copyToClipboard && !resultHandler.areContentsSecure()) {
-            CharSequence text = resultHandler.getDisplayContents();
-            ClipboardInterface.setText(text, this);
-        }
 
         if (source == IntentSource.NATIVE_APP_INTENT) {
 
