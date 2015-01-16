@@ -74,13 +74,13 @@ final class DecodeThread extends Thread {
                 decodeFormats.addAll(DecodeFormatManager.QR_CODE_FORMATS);
             }
             if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_DATA_MATRIX, true)) {
-                decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
+//                decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
             }
             if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_AZTEC, false)) {
-                decodeFormats.addAll(DecodeFormatManager.AZTEC_FORMATS);
+//                decodeFormats.addAll(DecodeFormatManager.AZTEC_FORMATS);
             }
             if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_PDF417, false)) {
-                decodeFormats.addAll(DecodeFormatManager.PDF417_FORMATS);
+//                decodeFormats.addAll(DecodeFormatManager.PDF417_FORMATS);
             }
         }
         hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);

@@ -64,7 +64,7 @@ public final class ProductResultHandler extends ResultHandler {
         String productID = getProductIDFromResult(getResult());
         switch (index) {
             case 0:
-                openProductSearch(productID);
+//                openProductSearch(productID);
                 break;
             case 1:
                 webSearch(productID);

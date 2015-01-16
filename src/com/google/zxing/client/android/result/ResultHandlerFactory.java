@@ -52,7 +52,7 @@ public final class ResultHandlerFactory {
             case CALENDAR:
                 return new CalendarResultHandler(activity, result);
             case ISBN:
-                return new ISBNResultHandler(activity, result, rawResult);
+                return null;
             default:
                 return new TextResultHandler(activity, result, rawResult);
         }
