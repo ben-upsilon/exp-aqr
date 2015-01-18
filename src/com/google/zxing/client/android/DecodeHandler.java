@@ -80,6 +80,19 @@ final class DecodeHandler extends Handler {
      */
     private void decode(byte[] data, int width, int height) {
         long start = System.currentTimeMillis();
+
+        //todo 加了不能起作用呢..
+//        // 新增反转数据代码开始
+//        byte[] rotatedData = new byte[data.length];
+//        for (int y = 0; y < height; y++) {
+//            for (int x = 0; x < width; x++)
+//                rotatedData[x * height + height - y - 1] = data[x + y * width];
+//        }
+//        int tmp = width;
+//        int nWidth = height;
+//        int nHeight = tmp;
+//        // 新增结束
+
         Result rawResult = null;
         PlanarYUVLuminanceSource source = activity.getCameraManager().buildLuminanceSource(data, width, height);
         if (source != null) {
