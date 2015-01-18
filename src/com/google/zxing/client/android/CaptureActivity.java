@@ -79,7 +79,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private View resultView;
     private Result lastResult;
     private boolean hasSurface;
-    private boolean copyToClipboard;
     private IntentSource source;
     private String sourceUrl;
     private ScanFromWebPageManager scanFromWebPageManager;
@@ -184,9 +183,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         Intent intent = getIntent();
 
-        copyToClipboard = prefs.getBoolean(PreferencesActivity.KEY_COPY_TO_CLIPBOARD, true)
-                && (intent == null || intent.getBooleanExtra(Intents.Scan.SAVE_HISTORY, true));
-
         source = IntentSource.NONE;
         decodeFormats = null;
         characterSet = null;
@@ -230,7 +226,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 // Scan only products and send the result to mobile Product Search.
                 source = IntentSource.PRODUCT_SEARCH_LINK;
                 sourceUrl = dataString;
-                decodeFormats = DecodeFormatManager.PRODUCT_FORMATS;
+//                decodeFormats = DecodeFormatManager.PRODUCT_FORMATS;
 
             } else if (isZXingURL(dataString)) {
 
