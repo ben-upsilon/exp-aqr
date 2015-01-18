@@ -319,14 +319,14 @@ public final class CameraConfigurationUtils {
             }
         });
 
-        if (Log.isLoggable(TAG, Log.INFO)) {
-            StringBuilder previewSizesString = new StringBuilder();
-            for (Camera.Size supportedPreviewSize : supportedPreviewSizes) {
-                previewSizesString.append(supportedPreviewSize.width).append('x')
-                        .append(supportedPreviewSize.height).append(' ');
-            }
-            Log.i(TAG, "Supported preview sizes: " + previewSizesString);
+
+        StringBuilder previewSizesString = new StringBuilder();
+        for (Camera.Size supportedPreviewSize : supportedPreviewSizes) {
+            previewSizesString.append(supportedPreviewSize.width).append('x')
+                    .append(supportedPreviewSize.height).append(' ');
         }
+        Log.i(TAG, "Supported preview sizes: " + previewSizesString);
+
 
         double screenAspectRatio = (double) screenResolution.x / (double) screenResolution.y;
 
