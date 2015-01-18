@@ -55,6 +55,26 @@ final class CameraConfigurationManager {
         Log.i(TAG, "Screen resolution: " + screenResolution);
         cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
         Log.i(TAG, "Camera resolution: " + cameraResolution);
+
+//        android.hardware.Camera.CameraInfo info =
+//                new android.hardware.Camera.CameraInfo();
+//        android.hardware.Camera.getCameraInfo(camera, info);
+//        int rotation = display.getRotation();
+//        int degrees = 0;
+//        switch (rotation) {
+//            case Surface.ROTATION_0: degrees = 0; break;
+//            case Surface.ROTATION_90: degrees = 90; break;
+//            case Surface.ROTATION_180: degrees = 180; break;
+//            case Surface.ROTATION_270: degrees = 270; break;
+//        }
+//
+//        int result;
+//        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+//            result = (info.orientation + degrees) % 360;
+//            result = (360 - result) % 360;  // compensate the mirror
+//        } else {  // back-facing
+//            result = (info.orientation - degrees + 360) % 360;
+//        }
     }
 
     void setDesiredCameraParameters(Camera camera, boolean safeMode) {
@@ -102,6 +122,8 @@ final class CameraConfigurationManager {
 
         Log.i(TAG, "Final camera parameters: " + parameters.flatten());
 
+
+        camera.setDisplayOrientation(90);
         camera.setParameters(parameters);
 
         Camera.Parameters afterParameters = camera.getParameters();
