@@ -16,6 +16,7 @@
 
 package com.google.zxing.client.android.result;
 
+import android.util.Log;
 import com.google.zxing.Result;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.result.ParsedResult;
@@ -32,30 +33,10 @@ public final class ResultHandlerFactory {
 
     public static ResultHandler makeResultHandler(CaptureActivity activity, Result rawResult) {
         ParsedResult result = parseResult(rawResult);
-        switch (result.getType()) {
-            case ADDRESSBOOK:
-                return new AddressBookResultHandler(activity, result);
-            case EMAIL_ADDRESS:
-                return new EmailAddressResultHandler(activity, result);
-            case PRODUCT:
-                return new ProductResultHandler(activity, result, rawResult);
-            case URI:
-                return null;
-            case WIFI:
-                return null;
-            case GEO:
-                return null;
-            case TEL:
-                return new TelResultHandler(activity, result);
-            case SMS:
-                return new SMSResultHandler(activity, result);
-            case CALENDAR:
-                return new CalendarResultHandler(activity, result);
-            case ISBN:
-                return null;
-            default:
-                return new TextResultHandler(activity, result, rawResult);
-        }
+        Log.d("ResultHandlerFactory", String.format("ResultHandler type :> %s", result.getType()));
+
+        return new TextResultHandler(activity, result, rawResult);
+
     }
 
     private static ParsedResult parseResult(Result rawResult) {
