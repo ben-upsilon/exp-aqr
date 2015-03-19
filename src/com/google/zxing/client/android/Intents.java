@@ -44,35 +44,9 @@ public final class Intents {
         public static final String MODE = "SCAN_MODE";
 
         /**
-         * Decode only UPC and EAN barcodes. This is the right choice for shopping apps which get
-         * prices, reviews, etc. for products.
-         */
-        public static final String PRODUCT_MODE = "PRODUCT_MODE";
-
-        /**
-         * Decode only 1D barcodes.
-         */
-        public static final String ONE_D_MODE = "ONE_D_MODE";
-
-        /**
          * Decode only QR codes.
          */
         public static final String QR_CODE_MODE = "QR_CODE_MODE";
-
-        /**
-         * Decode only Data Matrix codes.
-         */
-        public static final String DATA_MATRIX_MODE = "DATA_MATRIX_MODE";
-
-        /**
-         * Decode only Aztec.
-         */
-        public static final String AZTEC_MODE = "AZTEC_MODE";
-
-        /**
-         * Decode only PDF417.
-         */
-        public static final String PDF417_MODE = "PDF417_MODE";
 
         /**
          * Comma-separated list of formats to scan for. The values must match the names of

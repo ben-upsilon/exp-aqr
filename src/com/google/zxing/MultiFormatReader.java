@@ -94,47 +94,11 @@ public final class MultiFormatReader implements Reader {
                 hints == null ? null : (Collection<BarcodeFormat>) hints.get(DecodeHintType.POSSIBLE_FORMATS);
         Collection<Reader> readers = new ArrayList<>();
         if (formats != null) {
-//            boolean addOneDReader =
-//                    formats.contains(BarcodeFormat.UPC_A) ||
-//                            formats.contains(BarcodeFormat.UPC_E) ||
-//                            formats.contains(BarcodeFormat.EAN_13) ||
-//                            formats.contains(BarcodeFormat.EAN_8) ||
-//                            formats.contains(BarcodeFormat.CODABAR) ||
-//                            formats.contains(BarcodeFormat.CODE_39) ||
-//                            formats.contains(BarcodeFormat.CODE_93) ||
-//                            formats.contains(BarcodeFormat.CODE_128) ||
-//                            formats.contains(BarcodeFormat.ITF) ||
-//                            formats.contains(BarcodeFormat.RSS_14) ||
-//                            formats.contains(BarcodeFormat.RSS_EXPANDED);
-//            // Put 1D readers upfront in "normal" mode
-//            if (addOneDReader && !tryHarder) {
-//            }
+
             if (formats.contains(BarcodeFormat.QR_CODE)) {
                 readers.add(new QRCodeReader());
             }
-//            if (formats.contains(BarcodeFormat.DATA_MATRIX)) {
-//            }
-//            if (formats.contains(BarcodeFormat.AZTEC)) {
-//            }
-//            if (formats.contains(BarcodeFormat.PDF_417)) {
-//            }
-//            if (formats.contains(BarcodeFormat.MAXICODE)) {
-//                readers.add(new MaxiCodeReader());
-//            }
-//            // At end in "try harder" mode
-//            if (addOneDReader && tryHarder) {
-//            }
         }
-//        if (readers.isEmpty()) {
-//            if (!tryHarder) {
-//            }
-//
-//            readers.add(new QRCodeReader());
-//            readers.add(new MaxiCodeReader());
-//
-//            if (tryHarder) {
-//            }
-//        }
         this.readers = readers.toArray(new Reader[readers.size()]);
     }
 

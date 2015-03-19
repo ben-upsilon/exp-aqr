@@ -45,28 +45,8 @@ public final class MultiFormatWriter implements Writer {
 
         Writer writer = null;
         switch (format) {
-            case EAN_8:
-                break;
-            case EAN_13:
-                break;
-            case UPC_A:
-                break;
             case QR_CODE:
                 writer = new QRCodeWriter();
-                break;
-            case CODE_39:
-                break;
-            case CODE_128:
-                break;
-            case ITF:
-                break;
-            case PDF_417:
-                break;
-            case CODABAR:
-                break;
-            case DATA_MATRIX:
-                break;
-            case AZTEC:
                 break;
             default:
                 throw new IllegalArgumentException("No encoder available for format " + format);
