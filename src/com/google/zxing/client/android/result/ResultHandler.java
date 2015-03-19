@@ -29,7 +29,6 @@ import android.util.Log;
 import ben.upsilon.exp.aqr.R;
 import com.google.zxing.Result;
 import com.google.zxing.client.android.Contents;
-import com.google.zxing.client.android.LocaleManager;
 import com.google.zxing.client.android.PreferencesActivity;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.ParsedResultType;
@@ -393,11 +392,6 @@ public abstract class ResultHandler {
      */
     final void searchMap(String address) {
         launchIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + Uri.encode(address))));
-    }
-
-    final void getDirections(double latitude, double longitude) {
-        launchIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google." +
-                LocaleManager.getCountryTLD(activity) + "/maps?f=d&daddr=" + latitude + ',' + longitude)));
     }
 
 

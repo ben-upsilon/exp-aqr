@@ -40,11 +40,11 @@ public final class ResultHandlerFactory {
             case PRODUCT:
                 return new ProductResultHandler(activity, result, rawResult);
             case URI:
-                return new URIResultHandler(activity, result);
+                return null;
             case WIFI:
                 return null;
             case GEO:
-                return new GeoResultHandler(activity, result);
+                return null;
             case TEL:
                 return new TelResultHandler(activity, result);
             case SMS:
