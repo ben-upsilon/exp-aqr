@@ -17,7 +17,6 @@
 package com.google.zxing.client.android;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -60,8 +59,11 @@ import java.util.Map;
  */
 public final class CaptureActivity extends Activity implements SurfaceHolder.Callback {
 
+    //历史请求代码
     public static final int HISTORY_REQUEST_CODE = 0x0000bacc;
+
     private static final String TAG = CaptureActivity.class.getSimpleName();
+    //
     private static final long DEFAULT_INTENT_RESULT_DURATION_MS = 1500L;
     private static final long BULK_MODE_SCAN_DELAY_MS = 1000L;
     private static final String[] ZXING_URLS = {"http://zxing.appspot.com/scan", "zxing://scan/"};
@@ -522,6 +524,13 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     }
 
+    /**
+     * 内容解码处理
+     *
+     * @param rawResult
+     * @param resultHandler
+     * @param barcode
+     */
     // Briefly show the contents of the barcode, then handle the result outside Barcode Scanner.
     private void handleDecodeExternally(Result rawResult, ResultHandler resultHandler, Bitmap barcode) {
 
@@ -630,22 +639,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             decodeOrStoreSavedBitmap(null, null);
         } catch (IOException ioe) {
             Log.w(TAG, ioe);
-            displayFrameworkBugMessageAndExit();
         } catch (RuntimeException e) {
             // Barcode Scanner has seen crashes in the wild of this variety:
             // java.?lang.?RuntimeException: Fail to connect to camera service
             Log.w(TAG, "Unexpected error initializing camera", e);
-            displayFrameworkBugMessageAndExit();
         }
-    }
-
-    private void displayFrameworkBugMessageAndExit() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.app_name));
-        builder.setMessage(getString(R.string.msg_camera_framework_bug));
-        builder.setPositiveButton(R.string.button_ok, new FinishListener(this));
-        builder.setOnCancelListener(new FinishListener(this));
-        builder.show();
     }
 
     public void restartPreviewAfterDelay(long delayMS) {

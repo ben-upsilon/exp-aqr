@@ -211,6 +211,7 @@ public final class CameraManager {
     }
 
     /**
+     * 计算方块焦点.让用户对准目标范围进行扫描解码.
      * Calculates the framing rect which the UI should draw to show the user where to place the
      * barcode. This target helps with alignment as well as forces the user to hold the device
      * far enough away to ensure the image will be in focus.
@@ -240,6 +241,7 @@ public final class CameraManager {
     }
 
     /**
+     * 预览用的
      * Like {@link #getFramingRect} but coordinates are in terms of the preview frame,
      * not UI / screen.
      *
