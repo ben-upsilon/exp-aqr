@@ -91,6 +91,7 @@ public final class ViewfinderView extends View {
         int height = canvas.getHeight();
 
         // Draw the exterior (i.e. outside the framing rect) darkened
+        //画外面那个灰色透明..
         paint.setColor(resultBitmap != null ? resultColor : maskColor);
         canvas.drawRect(0, 0, width, frame.top, paint);
         canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);

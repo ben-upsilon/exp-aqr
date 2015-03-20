@@ -43,6 +43,7 @@ final class DecodeHandler extends Handler {
         this.activity = activity;
     }
 
+    //    缩略图
     private static void bundleThumbnail(PlanarYUVLuminanceSource source, Bundle bundle) {
         int[] pixels = source.renderThumbnail();
         int width = source.getThumbnailWidth();

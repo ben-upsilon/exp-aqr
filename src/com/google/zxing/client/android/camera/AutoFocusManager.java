@@ -28,23 +28,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.RejectedExecutionException;
 
+/**
+ * 自动对焦
+ */
 final class AutoFocusManager implements Camera.AutoFocusCallback {
 
     private static final String TAG = AutoFocusManager.class.getSimpleName();
 
+    //调整对焦用的间隔
     private static final long AUTO_FOCUS_INTERVAL_MS = 2000L;
+
+    //对焦调用的字段?
     private static final Collection<String> FOCUS_MODES_CALLING_AF;
 
     static {
         FOCUS_MODES_CALLING_AF = new ArrayList<>(2);
-        FOCUS_MODES_CALLING_AF.add(Camera.Parameters.FOCUS_MODE_AUTO);
-        FOCUS_MODES_CALLING_AF.add(Camera.Parameters.FOCUS_MODE_MACRO);
+        FOCUS_MODES_CALLING_AF.add(Camera.Parameters.FOCUS_MODE_AUTO);//自动?
+        FOCUS_MODES_CALLING_AF.add(Camera.Parameters.FOCUS_MODE_MACRO);//微距?
     }
     private final boolean useAutoFocus;
-    private final Camera camera;
+    private final Camera camera;//摄像头引用
     private boolean stopped;
     private boolean focusing;
-    private AsyncTask<?, ?, ?> outstandingTask;
+    private AsyncTask<?, ?, ?> outstandingTask;//这尼玛是啥...
 
     AutoFocusManager(Context context, Camera camera) {
         this.camera = camera;
@@ -63,6 +69,9 @@ final class AutoFocusManager implements Camera.AutoFocusCallback {
         autoFocusAgainLater();
     }
 
+    /**
+     * 之后再次自动对焦
+     */
     private synchronized void autoFocusAgainLater() {
         if (!stopped && outstandingTask == null) {
             AutoFocusTask newTask = new AutoFocusTask();
@@ -115,6 +124,9 @@ final class AutoFocusManager implements Camera.AutoFocusCallback {
         }
     }
 
+    /**
+     *
+     */
     private final class AutoFocusTask extends AsyncTask<Object, Object, Object> {
         @Override
         protected Object doInBackground(Object... voids) {

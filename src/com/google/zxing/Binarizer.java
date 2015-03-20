@@ -20,6 +20,8 @@ import com.google.zxing.common.BitArray;
 import com.google.zxing.common.BitMatrix;
 
 /**
+ *
+ * 这货是二值化
  * This class hierarchy provides a set of methods to convert luminance data to 1 bit data.
  * It allows the algorithm to vary polymorphically, for example allowing a very expensive
  * thresholding technique for servers and a fast one for mobile. It also permits the implementation

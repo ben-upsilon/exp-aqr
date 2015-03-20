@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
+ * 定位符
  * <p>This class attempts to find finder patterns in a QR Code. Finder patterns are the square
  * markers at three corners of a QR Code.</p>
  * <p>

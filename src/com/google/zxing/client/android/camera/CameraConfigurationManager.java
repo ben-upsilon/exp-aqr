@@ -144,6 +144,12 @@ final class CameraConfigurationManager {
         return screenResolution;
     }
 
+    /**
+     * 获取闪光灯状态
+     *
+     * @param camera
+     * @return
+     */
     boolean getTorchState(Camera camera) {
         if (camera != null) {
             Camera.Parameters parameters = camera.getParameters();
@@ -163,11 +169,24 @@ final class CameraConfigurationManager {
         camera.setParameters(parameters);
     }
 
+    /**
+     * 初始化闪光灯
+     * @param parameters
+     * @param prefs
+     * @param safeMode
+     */
     private void initializeTorch(Camera.Parameters parameters, SharedPreferences prefs, boolean safeMode) {
         boolean currentSetting = FrontLightMode.readPref(prefs) == FrontLightMode.ON;
         doSetTorch(parameters, currentSetting, safeMode);
     }
 
+
+    /**
+     * 设置闪光灯....坑..这尼玛为啥是叫torch...
+     * @param parameters
+     * @param newSetting
+     * @param safeMode
+     */
     private void doSetTorch(Camera.Parameters parameters, boolean newSetting, boolean safeMode) {
         CameraConfigurationUtils.setTorch(parameters, newSetting);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

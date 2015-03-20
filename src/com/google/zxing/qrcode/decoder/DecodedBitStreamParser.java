@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 依照规范解析比特位对应字符
  * <p>QR Codes can encode text as bits in one of several modes, and can use multiple modes
  * in one QR Code. This class decodes the bits back into text.</p>
  * <p>
