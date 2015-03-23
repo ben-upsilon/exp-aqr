@@ -17,7 +17,6 @@
 package com.google.zxing.client.android;
 
 import android.app.Activity;
-import android.os.Bundle;
 
 /**
  * The main settings activity.
@@ -27,10 +26,8 @@ import android.os.Bundle;
  */
 public final class PreferencesActivity extends Activity {
 
-    public static final String KEY_DECODE_QR = "preferences_decode_QR";
 
     public static final String KEY_FRONT_LIGHT_MODE = "preferences_front_light_mode";
-    public static final String KEY_BULK_MODE = "preferences_bulk_mode";
     public static final String KEY_SUPPLEMENTAL = "preferences_supplemental";
     public static final String KEY_AUTO_FOCUS = "preferences_auto_focus";
     public static final String KEY_INVERT_SCAN = "preferences_invert_scan";
@@ -39,12 +36,6 @@ public final class PreferencesActivity extends Activity {
     public static final String KEY_DISABLE_EXPOSURE = "preferences_disable_exposure";
     public static final String KEY_DISABLE_METERING = "preferences_disable_metering";
     public static final String KEY_DISABLE_BARCODE_SCENE_MODE = "preferences_disable_barcode_scene_mode";
-    public static final String KEY_AUTO_OPEN_WEB = "preferences_auto_open_web";
 
-    @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new PreferencesFragment()).commit();
-    }
 
 }

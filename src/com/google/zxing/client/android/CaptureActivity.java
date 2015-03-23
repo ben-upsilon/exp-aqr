@@ -18,7 +18,6 @@ package com.google.zxing.client.android;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -32,7 +31,6 @@ import android.util.TypedValue;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import ben.upsilon.exp.aqr.R;
 import com.google.zxing.*;
 import com.google.zxing.client.android.camera.CameraManager;
@@ -58,7 +56,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     public static final int HISTORY_REQUEST_CODE = 0x0000bacc;
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
-    private static final long BULK_MODE_SCAN_DELAY_MS = 1000L;
     private static final Collection<ResultMetadataType> DISPLAYABLE_METADATA_TYPES =
             EnumSet.of(ResultMetadataType.ISSUE_NUMBER,
                     ResultMetadataType.SUGGESTED_PRICE,
@@ -286,18 +283,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             // Then not from history, so beep/vibrate and we have an image to draw on
             drawResultPoints(barcode, scaleFactor, rawResult);
         }
-        Log.d(TAG, String.format("handleDecode ,source > %s", source));
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (fromLiveScan && prefs.getBoolean(PreferencesActivity.KEY_BULK_MODE, false)) {
-            Toast.makeText(getApplicationContext(),
-                    getResources().getString(R.string.msg_bulk_mode_scanned) + " (" + rawResult.getText() + ')',
-                    Toast.LENGTH_SHORT).show();
-            // Wait a moment or else it will scan the same barcode continuously about 3 times
-            restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
-        } else {
             handleDecodeInternally(rawResult, resultHandler, barcode);
-        }
+
     }
 
     /**
@@ -328,6 +316,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     // Put up our own UI for how to handle the decoded contents.
+//    处理解码的结果显示
     private void handleDecodeInternally(Result rawResult, ResultHandler resultHandler, Bitmap barcode) {
 
         CharSequence displayContents = resultHandler.getDisplayContents();
@@ -453,6 +442,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         }
     }
 
+    /**
+     * 初始化摄像头
+     *
+     * @param surfaceHolder
+     */
     private void initCamera(SurfaceHolder surfaceHolder) {
         if (surfaceHolder == null) {
             throw new IllegalStateException("No SurfaceHolder provided");

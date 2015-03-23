@@ -40,11 +40,13 @@ import java.util.List;
  */
 public final class ViewfinderView extends View {
 
-    private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};
-    private static final long ANIMATION_DELAY = 80L;
+    private static final int[] SCANNER_ALPHA = {0, 85, 170, 255, 170, 85};
+    private static final long ANIMATION_DELAY = 100L;
     private static final int CURRENT_POINT_OPACITY = 0xA0;
     private static final int MAX_RESULT_POINTS = 20;
     private static final int POINT_SIZE = 6;
+    private static int lineTop;
+    private static boolean started;
     private final Paint paint;
     private final int maskColor;
     private final int resultColor;
@@ -105,11 +107,22 @@ public final class ViewfinderView extends View {
         } else {
 
             // Draw a red "laser scanner" line through the middle to show decoding is active
+            if (!started) {
+                lineTop = frame.top;
+                started = true;
+            }
             paint.setColor(laserColor);
             paint.setAlpha(SCANNER_ALPHA[scannerAlpha]);
             scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.length;
             int middle = frame.height() / 2 + frame.top;
-            canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
+//            canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
+            lineTop += 5;
+            if (lineTop >= frame.bottom) {
+                lineTop = frame.top;
+            }
+//				canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
+            canvas.drawRect(frame.left + 2, lineTop - 1, frame.right - 1, lineTop + 2, paint);
+
 
             float scaleX = frame.width() / (float) previewFrame.width();
             float scaleY = frame.height() / (float) previewFrame.height();
@@ -121,17 +134,18 @@ public final class ViewfinderView extends View {
             if (currentPossible.isEmpty()) {
                 lastPossibleResultPoints = null;
             } else {
-                possibleResultPoints = new ArrayList<>(5);
-                lastPossibleResultPoints = currentPossible;
-                paint.setAlpha(CURRENT_POINT_OPACITY);
-                paint.setColor(resultPointColor);
-                synchronized (currentPossible) {
-                    for (ResultPoint point : currentPossible) {
-                        canvas.drawCircle(frameLeft + (int) (point.getX() * scaleX),
-                                frameTop + (int) (point.getY() * scaleY),
-                                POINT_SIZE, paint);
-                    }
-                }
+                //检测用的黄点(定位和矫正)
+//                possibleResultPoints = new ArrayList<>(5);
+//                lastPossibleResultPoints = currentPossible;
+//                paint.setAlpha(CURRENT_POINT_OPACITY);
+//                paint.setColor(resultPointColor);
+//                synchronized (currentPossible) {
+//                    for (ResultPoint point : currentPossible) {
+//                        canvas.drawCircle(frameLeft + (int) (point.getX() * scaleX),
+//                                frameTop + (int) (point.getY() * scaleY),
+//                                POINT_SIZE, paint);
+//                    }
+//                }
             }
             if (currentLast != null) {
                 paint.setAlpha(CURRENT_POINT_OPACITY / 2);
