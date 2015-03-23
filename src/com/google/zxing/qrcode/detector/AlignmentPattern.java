@@ -19,6 +19,8 @@ package com.google.zxing.qrcode.detector;
 import com.google.zxing.ResultPoint;
 
 /**
+ *
+ * 校正符
  * <p>Encapsulates an alignment pattern, which are the smaller square patterns found in
  * all but the simplest QR Codes.</p>
  *

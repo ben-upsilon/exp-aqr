@@ -93,10 +93,10 @@ public final class ViewfinderView extends View {
         // Draw the exterior (i.e. outside the framing rect) darkened
         //画外面那个灰色透明..
         paint.setColor(resultBitmap != null ? resultColor : maskColor);
-        canvas.drawRect(0, 0, width, frame.top, paint);
-        canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
-        canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);
-        canvas.drawRect(0, frame.bottom + 1, width, height, paint);
+        canvas.drawRect(0, 0, width, frame.top, paint);//上面的灰色方块
+        canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);//左边的灰色方块
+        canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);//右边的
+        canvas.drawRect(0, frame.bottom + 1, width, height, paint);//下面
 
         if (resultBitmap != null) {
             // Draw the opaque result bitmap over the scanning rectangle

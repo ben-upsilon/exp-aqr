@@ -17,18 +17,12 @@
 package com.google.zxing.client.android;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Browser;
-import android.util.Log;
 import ben.upsilon.exp.aqr.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
@@ -85,7 +79,7 @@ public final class CaptureActivityHandler extends Handler {
                     if (compressedBitmap != null) {
                         barcode = BitmapFactory.decodeByteArray(compressedBitmap, 0, compressedBitmap.length, null);
                         // Mutable copy:
-                        barcode = barcode.copy(Bitmap.Config.ARGB_8888, true);
+                        barcode = barcode.copy(Bitmap.Config.RGB_565, true);
                     }
                     scaleFactor = bundle.getFloat(DecodeThread.BARCODE_SCALED_FACTOR);
                 }
@@ -100,37 +94,13 @@ public final class CaptureActivityHandler extends Handler {
                 activity.setResult(Activity.RESULT_OK, (Intent) message.obj);
                 activity.finish();
                 break;
-            case R.id.launch_product_query:
-                String url = (String) message.obj;
 
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                intent.setData(Uri.parse(url));
-
-                ResolveInfo resolveInfo =
-                        activity.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                String browserPackageName = null;
-                if (resolveInfo != null && resolveInfo.activityInfo != null) {
-                    browserPackageName = resolveInfo.activityInfo.packageName;
-                    Log.d(TAG, "Using browser in package " + browserPackageName);
-                }
-
-                // Needed for default Android browser / Chrome only apparently
-                if ("com.android.browser".equals(browserPackageName) || "com.android.chrome".equals(browserPackageName)) {
-                    intent.setPackage(browserPackageName);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(Browser.EXTRA_APPLICATION_ID, browserPackageName);
-                }
-
-                try {
-                    activity.startActivity(intent);
-                } catch (ActivityNotFoundException ignored) {
-                    Log.w(TAG, "Can't find anything to handle VIEW of URI " + url);
-                }
-                break;
         }
     }
 
+    /**
+     * 退出
+     */
     public void quitSynchronously() {
         state = State.DONE;
         cameraManager.stopPreview();
@@ -148,6 +118,9 @@ public final class CaptureActivityHandler extends Handler {
         removeMessages(R.id.decode_failed);
     }
 
+    /**
+     * 重置预览和解码
+     */
     private void restartPreviewAndDecode() {
         if (state == State.SUCCESS) {
             state = State.PREVIEW;

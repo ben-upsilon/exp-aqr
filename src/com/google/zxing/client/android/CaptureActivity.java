@@ -38,13 +38,11 @@ import com.google.zxing.*;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.result.ResultHandler;
 import com.google.zxing.client.android.result.ResultHandlerFactory;
+import com.google.zxing.common.BitMatrix;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
@@ -82,7 +80,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private String characterSet;
     private InactivityTimer inactivityTimer;
     private AmbientLightManager ambientLightManager;
-
 
 
     private static void drawLine(Canvas canvas, Paint paint, ResultPoint a, ResultPoint b, float scaleFactor) {
@@ -126,6 +123,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     protected void onResume() {
         super.onResume();
 
+
         // CameraManager must be initialized here, not in onCreate(). This is necessary because we don't
         // want to open the camera driver and measure the screen size if we're going to show the help on
         // first launch. That led to bugs where the scanning rectangle was the wrong size and partially
@@ -141,13 +139,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         handler = null;
         lastResult = null;
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-//        if (prefs.getBoolean(PreferencesActivity.KEY_DISABLE_AUTO_ORIENTATION, true)) {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        } else {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-//        }
 
         resetStatusView();
 
@@ -172,43 +163,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         decodeFormats = null;
         characterSet = null;
         Log.d(TAG, "intent :> " + intent.toString());
-        if (intent != null) {
 
-            String action = intent.getAction();
-            String dataString = intent.getDataString();
+        String action = intent.getAction();
+        Log.d(TAG, "action :> " + action);
+        String dataString = intent.getDataString();
+        Log.d(TAG, "dataString :> " + dataString);
 
-            if (Intents.Scan.ACTION.equals(action)) {
+        characterSet = intent.getStringExtra(Intents.Scan.CHARACTER_SET);
 
-                // Scan the formats the intent requested, and return the result to the calling activity.
-//                source = IntentSource.NATIVE_APP_INTENT;
-                decodeFormats = DecodeFormatManager.parseDecodeFormats(intent);
-                decodeHints = DecodeHintManager.parseDecodeHints(intent);
-
-                if (intent.hasExtra(Intents.Scan.WIDTH) && intent.hasExtra(Intents.Scan.HEIGHT)) {
-                    int width = intent.getIntExtra(Intents.Scan.WIDTH, 0);
-                    int height = intent.getIntExtra(Intents.Scan.HEIGHT, 0);
-                    if (width > 0 && height > 0) {
-                        cameraManager.setManualFramingRect(width, height);
-                    }
-                }
-
-                if (intent.hasExtra(Intents.Scan.CAMERA_ID)) {
-                    int cameraId = intent.getIntExtra(Intents.Scan.CAMERA_ID, -1);
-                    if (cameraId >= 0) {
-                        cameraManager.setManualCameraId(cameraId);
-                    }
-                }
-
-                String customPromptMessage = intent.getStringExtra(Intents.Scan.PROMPT_MESSAGE);
-                if (customPromptMessage != null) {
-                    statusView.setText(customPromptMessage);
-                }
-
-            }
-
-            characterSet = intent.getStringExtra(Intents.Scan.CHARACTER_SET);
-
-        }
     }
 
 
@@ -370,13 +332,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         CharSequence displayContents = resultHandler.getDisplayContents();
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        if (resultHandler.getDefaultButtonID() != null && prefs.getBoolean(PreferencesActivity.KEY_AUTO_OPEN_WEB, false)) {
-            resultHandler.handleButtonPress(resultHandler.getDefaultButtonID());
-            return;
-        }
-
         statusView.setVisibility(View.GONE);
         viewfinderView.setVisibility(View.GONE);
         resultView.setVisibility(View.VISIBLE);
@@ -451,6 +406,41 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     }
 
+    /**
+     * check code lint
+     */
+    void omg() {
+        HashMap<EncodeHintType, String> hints = new HashMap<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        int width = 400;
+        int height = 400;
+        String data = "omg";
+        MultiFormatWriter writer = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = writer.encode(data, BarcodeFormat.QR_CODE, width, height, hints);
+
+            int[] pixels = new int[400 * 400];
+            // 下面这里按照二维码的算法，逐个生成二维码的图片，
+            // 两个for循环是图片横列扫描的结果
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    if (bitMatrix.get(x, y)) {
+                        pixels[y * width + x] = 0xff000000;
+                    } else {
+                        pixels[y * width + x] = 0xffffffff;
+                    }
+                }
+            }
+            // 生成二维码图片的格式，使用ARGB_8888
+            Bitmap bitmap = Bitmap.createBitmap(width, height,
+                    Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+            ImageView qrcode = null;
+            qrcode.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+
+        }
+    }
 
     private void sendReplyMessage(int id, Object arg, long delayMS) {
         if (handler != null) {
@@ -487,6 +477,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         }
     }
 
+
+    //延后重置预览
     public void restartPreviewAfterDelay(long delayMS) {
         if (handler != null) {
             handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);

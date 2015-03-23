@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * 定位符
+ * 找定位符
  * <p>This class attempts to find finder patterns in a QR Code. Finder patterns are the square
  * markers at three corners of a QR Code.</p>
  * <p>
@@ -88,7 +88,7 @@ public class FinderPatternFinder {
         }
         float moduleSize = totalModuleSize / 7.0f;
         float maxVariance = moduleSize / 2.0f;
-        // Allow less than 50% variance from 1-1-3-1-1 proportions
+        // Allow less than 50% variance from 1-1-3-1-1 proportions 囧,50%误差
         return
                 Math.abs(moduleSize - stateCount[0]) < maxVariance &&
                         Math.abs(moduleSize - stateCount[1]) < maxVariance &&
